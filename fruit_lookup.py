@@ -19,6 +19,17 @@ API_URL = "https://www.fruityvice.com/api/fruit"
 
 def get_fruit(name: str) -> dict:
     """
+    Fetch data from FruityVice API.
+
+    Args:
+        name: The name of the fruit, e.g. "strawberry"
+
+    Returns:
+        A dict with keys: name, id, family, sugar, carbohydrates
+
+    Raises:
+          ValueError: If the fruit is not found or name is empty.
+          ConnectionError: If API can't be reached
 
     """
     if not name or not name.strip():
@@ -50,4 +61,6 @@ def get_fruit(name: str) -> dict:
         "carbohydrates": raw.get("carbohydrates"),
 
     }
+
+
 
