@@ -57,20 +57,25 @@ def get_fruit(name: str) -> dict:
         "name": raw.get("name"),
         "id": raw.get("id"),
         "family": raw.get("family"),
-        "sugar": raw.get("sugar"),
-        "carbohydrates": raw.get("carbohydrates"),
+        "sugar": nutritions.get("sugar"),
+        "carbohydrates": nutritions.get("carbohydrates"),
     }
 
 
 def format_human(fruit: dict) -> str:
     """Format data into human-readable output"""
     return (
-        f"Fruit: {fruit['name']\n}"
+        f"Fruit: {fruit['name']}\n"
         f"ID: {fruit['id']}\n"
         f"Family: {fruit['family']}\n"
         f"Sugar: {fruit['sugar']} g\n"
         f"Carbohydrates: {fruit['carbohydrates']} g"
         )
+
+def format_json(fruit: dict) -> str:
+    """Format data as machine-readable JSON output"""
+    return json.dumps(fruit, indent=2)
+
 
 
 
