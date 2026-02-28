@@ -39,6 +39,7 @@ def get_fruit(name: str) -> dict:
 
     try:
         response = requests.get(url, timeout=10)
+
     except requests.exceptions.ConnectionError:
         raise ConnectionError(
             "Could not reach the FruityVice API. "
@@ -50,6 +51,15 @@ def get_fruit(name: str) -> dict:
         )
 
     raw = response.json()
+    if response.status_code == 404:
+        raise ValueError(
+            f"Fruit '{name}' was not found."
+        )
+
+    if not response.ok:
+        raise ConnectionError(
+            f"Unexpected API error (HTTP {response.status_code})."
+        )
 
     nutritions = raw.get("nutritions", {})
 
@@ -76,7 +86,46 @@ def format_json(fruit: dict) -> str:
     """Format data as machine-readable JSON output"""
     return json.dumps(fruit, indent=2)
 
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="fruit_lookup",
+    )
+    parser.add_argument(
+        "fruit",
+    )
+    parser.add_argument(
+        "--format",
+        choices=["human","machine"],
+        default="human",
+    )
+    return parser
 
+
+
+
+
+def main(argv=None):
+    """"""
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    try:
+        fruit = get_fruit(args.fruit)
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(2)
+    except ConnectionError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(2)
+
+    if args.format == "machine":
+        print(format_json(fruit))
+    else:
+        print(format_human(fruit))
+
+
+if __name__ == "__main__":
+    main()
 
 
 
