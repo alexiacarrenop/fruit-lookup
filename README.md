@@ -66,14 +66,14 @@ Carbohydrates:  7.68 g
 ```python
 from fruit_lookup import get_fruit, format_human, format_machine
 
-# Fetch data (raises ValueError or ConnectionError on failure)
+# Fetch data (raises ValueError or ConnectionError if needed)
 fruit = get_fruit("strawberry")
 
 # Format it
 print(format_human(fruit))
 print(format_machine(fruit))
 
-# Or work with the raw dict directly
+# Or work with specific attributes
 print(fruit["sugar"])
 ```
 
